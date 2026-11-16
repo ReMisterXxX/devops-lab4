@@ -1,4 +1,5 @@
 import os
+import time
 
 from flask import Flask, jsonify, request
 
@@ -38,6 +39,19 @@ def create_task():
     return jsonify(db.add_task(title)), 201
 
 
+def init_database():
+    retries = int(os.getenv("DB_INIT_RETRIES", 10))
+    for attempt in range(1, retries + 1):
+        try:
+            db.init_db()
+            print("Baza danych gotowa", flush=True)
+            return
+        except Exception:
+            print(f"Baza danych niedostepna (proba {attempt}/{retries})", flush=True)
+            time.sleep(3)
+    print("Start bez bazy danych - /health zwroci status 503", flush=True)
+
+
 if __name__ == "__main__":
-    db.init_db()
+    init_database()
     app.run(host="0.0.0.0", port=5000)

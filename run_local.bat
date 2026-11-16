@@ -8,14 +8,14 @@ docker rm -f lab4_single >nul 2>&1
 docker compose down -v >nul 2>&1
 echo Uruchamianie Lab4...
 echo [01_docker_build]
-echo $ docker build -t lab4-app:1.0.0 . >> wyniki\01_docker_build.txt
-docker build -t lab4-app:1.0.0 . >> wyniki\01_docker_build.txt 2>&1
+echo $ docker build -t lab4-app:1.1.0 . >> wyniki\01_docker_build.txt
+docker build -t lab4-app:1.1.0 . >> wyniki\01_docker_build.txt 2>&1
 echo.>> wyniki\01_docker_build.txt
 echo [02_docker_run]
-echo $ docker run -d --name lab4_single -p 5050:5000 -e APP_ENV=single-container lab4-app:1.0.0 >> wyniki\02_docker_run.txt
-docker run -d --name lab4_single -p 5050:5000 -e APP_ENV=single-container lab4-app:1.0.0 >> wyniki\02_docker_run.txt 2>&1
+echo $ docker run -d --name lab4_single -p 5050:5000 -e APP_ENV=single-container -e DB_INIT_RETRIES=1 lab4-app:1.1.0 >> wyniki\02_docker_run.txt
+docker run -d --name lab4_single -p 5050:5000 -e APP_ENV=single-container -e DB_INIT_RETRIES=1 lab4-app:1.1.0 >> wyniki\02_docker_run.txt 2>&1
 echo.>> wyniki\02_docker_run.txt
-timeout /t 5 /nobreak >nul
+timeout /t 8 /nobreak >nul
 echo $ docker ps --filter name=lab4_single >> wyniki\02_docker_run.txt
 docker ps --filter name=lab4_single >> wyniki\02_docker_run.txt 2>&1
 echo.>> wyniki\02_docker_run.txt

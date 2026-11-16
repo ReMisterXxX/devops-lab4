@@ -23,9 +23,10 @@ def init_db():
 
 
 def check_db():
+    init_db()
     with get_connection() as conn, conn.cursor() as cur:
-        cur.execute("SELECT 1")
-        return cur.fetchone()[0] == 1
+        cur.execute("SELECT COUNT(*) FROM tasks")
+        return True
 
 
 def list_tasks():
